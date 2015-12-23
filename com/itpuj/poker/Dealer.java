@@ -122,15 +122,6 @@ public class Dealer {
 				}
 			}
 		}
-		for (int i = 0; i < Consts.MAX_PLAYERS; i++) {
-			System.out.println("Checking for blinds...");
-			if (players.get(i).hasSmallBlind()) {
-				System.out.println(players.get(i).getName() + " is the small blind.");
-			}
-			if (players.get(i).hasBigBlind()) {
-				System.out.println(players.get(i).getName() + " is the big blind.");
-			}
-		}
 	}
 	
 	public List<Player> setDealOrder(List<Player> players) {
