@@ -16,6 +16,16 @@ public class Player {
 		this.button = false;
 	}
 	
+	public int addChips(int n) {
+		this.chips += n;
+		return this.chips;
+	}
+	
+	public int deductChips(int n) {
+		this.chips -= n;
+		return this.chips;
+	}
+	
 	public int getChips() {
 		return chips;
 	}
@@ -48,10 +58,26 @@ public class Player {
 		return smallBlind;
 	}
 	
+	public int postBlind() {
+		int amt = 0;
+		if (this.hasBigBlind()) {
+			this.chips -= Consts.BIG_BLIND_AMT;
+			amt = Consts.BIG_BLIND_AMT;
+		} else if (this.hasSmallBlind()) {
+			this.chips -= Consts.SMALL_BLIND_AMT;
+			amt = Consts.SMALL_BLIND_AMT;
+		}
+		return amt;
+	}
+	
 	public void receiveCard(Card card) {
 		if (hand.size() < 2) {
 			hand.add(card);
 		}
+	}
+	
+	public void reportStatus(Player p) {
+		System.out.println(this.playerName + " has " + this.getHoleCards() + " and " + this.getChips() + ".");
 	}
 	
 	public void setBigBlind() {

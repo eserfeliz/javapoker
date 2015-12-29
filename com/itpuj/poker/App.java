@@ -26,9 +26,18 @@ public class App {
 		
 		while (numOfTurns < 4) {
 			dealer.setBlinds();
+			table.addToPot(dealer.collectPostedBlinds(players));
 			dealOrder = dealer.setDealOrder(dealOrder);
 			dealer.dealHoleCards(dealOrder);
+			for (Player p : players) {
+				p.reportStatus(p);
+			}
 			System.out.println("Game is played...showdown...and the game is done!");
+			dealer.pushPot(table.awardPot());
+			for (Player p : players) {
+				p.reportStatus(p);
+			}
+			table.clearPot();
 			buttonNum = dealer.moveButton(buttonNum);
 			System.out.println(dealer.getButtonPlacement().getName() + " now has the button.");
 			numOfTurns++;
@@ -42,7 +51,7 @@ public class App {
 		deck = new Deck();
 		dealer = new Dealer();
 		dealer.takeDeck(deck);
-		seatPlayers(players, Consts.MAX_PLAYERS);
+		players = table.seatPlayers(players, Consts.MAX_PLAYERS);
 		dealer.greetPlayers(players);
 		
 		dealer.giveButtonToPlayer(buttonNum);
@@ -50,12 +59,6 @@ public class App {
 			dealOrder.add(players.get(i));
 		}
 		dealer.shuffleDeck();
-	}
-	
-	private static void seatPlayers(List<Player> players, int numOfPlayers) {
-		for (int i = 0; i < numOfPlayers; i++) {
-			players.add(i, new Player(i + 1, 1500));
-		}
-	}
+	}	
 
 }

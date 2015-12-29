@@ -17,6 +17,14 @@ public class Dealer {
 		this.dealOrder = null;
 	}
 	
+	public int collectPostedBlinds(List<Player> players) {
+		int amt = 0;
+		for (Player p : players) {
+			amt += p.postBlind();
+		}
+		return amt;
+	}
+	
 	public void dealHoleCards(List<Player> players) {
 		Card holeCard;
 		for (int i = 0; i < Consts.MAX_HOLE_CARDS; i++) {
@@ -100,6 +108,10 @@ public class Dealer {
 		}
 		giveButtonToPlayer(n);
 		return n;
+	}
+	
+	public void pushPot(int n) {
+		players.get((int) (Math.random() * 3)).addChips(n);
 	}
 	
 	public void setBlinds() {
