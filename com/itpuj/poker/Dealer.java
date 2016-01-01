@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Dealer {
 	
-	private List<Player> players, dealOrder, tempDealOrder;
+	private List<Player> betOrder, dealOrder, players, tempDealOrder;
 	
 	private Deck deck, tempDeck;
 	private Player playerWithButton;
@@ -15,6 +15,7 @@ public class Dealer {
 		this.deck = null;
 		this.players = null;
 		this.dealOrder = null;
+		this.betOrder = null;
 	}
 	
 	public int collectPostedBlinds(List<Player> players) {
@@ -90,6 +91,7 @@ public class Dealer {
 	public void greetPlayers(List<Player> players) {
 		this.players = players;
 		this.dealOrder = new ArrayList<Player>();
+		this.betOrder = new ArrayList<Player>();
 		for (int i = 0; i < Consts.MAX_PLAYERS; i++) {
 			dealOrder.add(players.get(i));
 		}
@@ -111,7 +113,7 @@ public class Dealer {
 	}
 	
 	public void pushPot(int n) {
-		players.get((int) (Math.random() * 3)).addChips(n);
+		players.get((int) (Math.random() * Consts.MAX_PLAYERS)).addChips(n);
 	}
 	
 	public void setBlinds() {
@@ -134,6 +136,33 @@ public class Dealer {
 				}
 			}
 		}
+	}
+	
+	public List<Player> setBetOrder(List<Player> players) {
+		betOrder.clear();
+		int betOrderIndexNum = 0;
+		int betOrderSizeAfterFirstPass = 0;
+		int bigBlindIndexNum = 0;
+		for (int i = 0; i < Consts.MAX_PLAYERS; i++) {
+			if (players.get(i).hasBigBlind()) {
+				bigBlindIndexNum = i;
+			}
+		}
+		if (bigBlindIndexNum == Consts.MAX_PLAYERS - 1) {
+			betOrderIndexNum = 0;
+		} else {
+			betOrderIndexNum = bigBlindIndexNum + 1;
+		}
+		for (int i = betOrderIndexNum; i < Consts.MAX_PLAYERS; i++) {
+				betOrder.add(players.get(i));
+		}
+		betOrderSizeAfterFirstPass = betOrder.size();
+		if (betOrderIndexNum != 0) {
+			for (int i = 0; i < Consts.MAX_PLAYERS - betOrderSizeAfterFirstPass; i++) {
+				betOrder.add(players.get(i));
+			}
+		}
+		return betOrder;
 	}
 	
 	public List<Player> setDealOrder(List<Player> players) {

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Player {
 
-	private List<Card> hand = new ArrayList<Card>(2);
+	private List<Card> hand = new ArrayList<Card>(Consts.MAX_HOLE_CARDS);
 	private String playerName, handString;
 	private boolean button, bigBlind, smallBlind;
 	private int chips;
@@ -71,7 +71,7 @@ public class Player {
 	}
 	
 	public void receiveCard(Card card) {
-		if (hand.size() < 2) {
+		if (hand.size() < Consts.MAX_HOLE_CARDS) {
 			hand.add(card);
 		}
 	}

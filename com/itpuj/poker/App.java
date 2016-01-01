@@ -5,7 +5,7 @@ import java.util.List;
 
 public class App {
 	
-	private static List<Player> players, dealOrder;
+	private static List<Player> players, betOrder, dealOrder;
 	private static Table table;
 	private static Deck deck;
 	private static Dealer dealer;
@@ -19,6 +19,7 @@ public class App {
 		int numOfTurns = 0;
 		
 		players = new ArrayList<Player>(Consts.MAX_PLAYERS);
+		betOrder = new ArrayList<Player>(Consts.MAX_PLAYERS);
 		dealOrder = new ArrayList<Player>(players);
 		buttonNum = 0;
 		
@@ -26,11 +27,21 @@ public class App {
 		
 		while (numOfTurns < 4) {
 			dealer.setBlinds();
+			for (int i = 0; i < Consts.MAX_PLAYERS; i++) {
+				if (players.get(i).hasBigBlind()) {
+					System.out.println(players.get(i).getName() + " has the big blind.");
+				}
+			}
 			table.addToPot(dealer.collectPostedBlinds(players));
 			dealOrder = dealer.setDealOrder(dealOrder);
+			betOrder = dealer.setBetOrder(players);
 			dealer.dealHoleCards(dealOrder);
 			for (Player p : players) {
 				p.reportStatus(p);
+			}
+			System.out.println("The bet order is as follows:");
+			for (int i = 0; i < Consts.MAX_PLAYERS; i++) {
+				System.out.println(betOrder.get(i).getName());
 			}
 			System.out.println("Game is played...showdown...and the game is done!");
 			dealer.pushPot(table.awardPot());
